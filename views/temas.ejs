@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Temas</title>
+</head>
+<body>
+  <h1>Lista de Temas</h1>
+
+  <!-- Formulario para agregar tema -->
+  <form id="formCrearTema">
+    <input type="text" name="titulo" placeholder="Nuevo tema" required>
+    <button type="submit">Agregar tema</button>
+  </form>
+
+  <ul id="listaTemas">
+    <% temas.forEach(tema => { %>
+      <li data-id="<%= tema.id %>">
+        <%= tema.titulo %> - Votos: <span class="votos"><%= tema.votos %></span>
+        <button class="votar">Votar 👍</button>
+        <button class="borrar">Borrar ❌</button>
+      </li>
+    <% }) %>
+  </ul>
+
+  <script>
+    const listaTemas = document.getElementById('listaTemas');
+    const formCrear = document.getElementById('formCrearTema');
+
+    // Crear tema
+    formCrear.addEventListener('submit', e => {
+      e.preventDefault();
+      const titulo = formCrear.titulo.value;
+      fetch('/temas/crear', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({titulo})
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.success){
+          const li = document.createElement('li');
+          li.dataset.id = data.tema.id;
+          li.innerHTML = `
+            ${data.tema.titulo} - Votos: <span class="votos">${data.tema.votos}</span>
+            <button class="votar">Votar 👍</button>
+            <button class="borrar">Borrar ❌</button>
+          `;
+          listaTemas.appendChild(li);
+          agregarListeners(li); // Agregar eventos a los nuevos botones
+          formCrear.reset();
+        }
+      });
+    });
+
+    // Función para agregar listeners a votación y borrado
+    function agregarListeners(li){
+      const votarBtn = li.querySelector('.votar');
+      const borrarBtn = li.querySelector('.borrar');
+      const spanVotos = li.querySelector('.votos');
+      const id = li.dataset.id;
+
+      votarBtn.addEventListener('click', () => {
+        fetch(`/temas/votar/${id}`, { method: 'PUT' })
+          .then(res => res.json())
+          .then(data => {
+            if(data.success){
+              spanVotos.textContent = parseInt(spanVotos.textContent) + 1;
+            }
+          });
+      });
+
+      borrarBtn.addEventListener('click', () => {
+        fetch(`/temas/borrar/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(data => {
+            if(data.success) li.remove();
+          });
+      });
+    }
+
+    // Agregar listeners a los elementos ya existentes
+    document.querySelectorAll('#listaTemas li').forEach(agregarListeners);
+  </script>
+</body>
+</html>

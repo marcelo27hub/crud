@@ -1,7 +1,7 @@
 // arrays temporales
 let temas = [
-    { id: 1, titulo: "Marcas de computadoras", votos: 0, enlace: [] },
-    { id: 2, titulo: "tienda de notebooks", votos: 0, enlace: [] }
+    { id: 1, titulo: "Marcas de computadoras", votos: 0, enlaces: [] },
+    { id: 2, titulo: "tienda de notebooks", votos: 0, enlaces: [] }
 ];
 
 // mostrar los temas
@@ -17,7 +17,7 @@ function crearTemas(req, res){
         id: temas.length ? temas[temas.length -1].id +1 : 1,
         titulo: nuevoTitulo,
         votos: 0,
-        enlace: []
+        enlaces: []
     };
     temas.push(nuevoTema);
     res.json({success: true, tema: nuevoTema});
@@ -28,7 +28,7 @@ function votarTemas(req, res){
     const id = parseInt(req.params.id);
     const tema = temas.find(t => t.id === id);
     if (tema){
-        tema.votos++; // <-- corregido de temass a tema
+        tema.votos++; //  corregido de temass a tema
         res.json({success: true, votos: tema.votos});
     } else{
         res.json({success: false});
@@ -59,7 +59,7 @@ function crearEnlace(req, res) {
     };
 
     tema.enlaces.push(nuevoEnlace);
-    res.json({ success: true, enlace: nuevoEnlace });
+    res.json({ success: true, enlaces: nuevoEnlace });
 }
 
 //votar enlaces
@@ -67,11 +67,11 @@ function votarEnlace(req, res) {
     const tema = temas.find(t => t.id == req.params.id);
     if (!tema) return res.json({ success: false });
 
-    const enlace = tema.enlaces.find(e => e.id == req.params.enlaceId);
-    if (!enlace) return res.json({ success: false });
+    const enlaces = tema.enlaces.find(e => e.id == req.params.enlaceId);
+    if (!enlaces) return res.json({ success: false });
 
-    enlace.votos++;
-    res.json({ success: true, votos: enlace.votos });
+    enlaces.votos++;
+    res.json({ success: true, votos: enlaces.votos });
 }
 
 //eliminar enlaces

@@ -16,10 +16,13 @@ app.use(express.static("public"));
 
 //ruta principal 
 app.get("/", (req, res) =>{
-    res.send("servidor express corriendo!");
+    res.send("servidor exxpress corriendo!");
 });
 
 
+//importar rutas de temasrutas
+const temasrutas = require("./rutas/temasrutas");
+app.use("/temas", temasrutas);
 
 //iniciar servidor
 app.listen(PORT, () => console.log(`servidor activo en http://localhost:${PORT}`));

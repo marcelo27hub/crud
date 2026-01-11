@@ -47,4 +47,18 @@ function eliminarTemas(req, res){
     }
 }
 
-module.exports = {temas, mostrarTemas, crearTemas, votarTemas, eliminarTemas};
+//crear enlaces
+function crearEnlace(req, res) {
+    const tema = temas.find(t => t.id == req.params.id);
+    if (!tema) return res.json({ success: false });
+
+    const nuevoEnlace = {
+    id: tema.enlaces.length ? tema.enlaces.at(-1).id + 1 : 1,
+    url: req.body.url,
+    votos: 0
+    };
+
+    tema.enlaces.push(nuevoEnlace);
+    res.json({ success: true, enlace: nuevoEnlace });
+}
+module.exports = {temas, mostrarTemas, crearTemas, votarTemas, eliminarTemas, crearEnlace};

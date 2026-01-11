@@ -4,18 +4,17 @@ let temas = [
     { id: 2, titulo: "tienda de notebooks", votos: 0, enlace: [] }
 ];
 
-//mostrar los temas
-function mostrarTemas (req, res){
+// mostrar los temas
+function mostrarTemas(req, res){
     const ordenados = [...temas].sort((a, b) => b.votos - a.votos);
     res.render("temas", {temas: ordenados});
 }
 
-
-//nuevos temas
-function crearTemas (req, res){
+// nuevos temas
+function crearTemas(req, res){
     const nuevoTitulo = req.body.titulo;
     const nuevoTema = {
-        id:temas.length ? temas[temas.length -1].id +1: 1,
+        id: temas.length ? temas[temas.length -1].id +1 : 1,
         titulo: nuevoTitulo,
         votos: 0,
         enlace: []
@@ -24,16 +23,16 @@ function crearTemas (req, res){
     res.json({success: true, tema: nuevoTema});
 }
 
-//votar temas
+// votar temas
 function votarTemas(req, res){
     const id = parseInt(req.params.id);
-    const tema = temas.find( t => t.id === id);
+    const tema = temas.find(t => t.id === id);
     if (tema){
-        temass.votos++;
+        tema.votos++; // <-- corregido de temass a tema
         res.json({success: true, votos: tema.votos});
     } else{
         res.json({success: false});
     }
 }
 
-module.exports = {temas, mostrarTemas, crearTemas, votarTemas}
+module.exports = {temas, mostrarTemas, crearTemas, votarTemas};

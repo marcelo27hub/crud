@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Temas de Aprendizaje</title>
+</head>
+<body>
+    <h1>Lista de Temas</h1>
+    <ul>
+    <% temas.forEach(tema => { %>
+        <li>
+        <strong><%= tema.titulo %></strong> — Votos: <%= tema.votos %>
+        </li>
+    <% }) %>
+    </ul>
+</body>
+</html>

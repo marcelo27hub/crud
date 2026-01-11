@@ -13,5 +13,35 @@
         </li>
     <% }) %>
     </ul>
+    <h2>Agregar un nuevo tema</h2>
+    <form id="formTema">
+        <input type="text" name="titulo" placeholder="Título del tema" required>
+        <button type="submit">Crear Tema</button>
+    </form>
+
+    <script>
+        const form = document.getElementById("formTema");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault(); // evitar que se recargue la página
+
+            const formData = new FormData(form);
+            const data = { titulo: formData.get("titulo") };
+
+            const response = await fetch("/temas", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                // recarga la página para ver el nuevo tema
+                location.reload();
+            } else {
+                alert("Hubo un error al crear el tema");
+            }
+        });
+    </script>
 </body>
 </html>

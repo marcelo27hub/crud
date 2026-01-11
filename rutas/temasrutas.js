@@ -1,8 +1,8 @@
 const express = require("express");
-const Router = express.Router();
-const {mostrarTemas} = require("./controladores/temascontroladores");
+const router = express.Router();
+const {mostrarTemas} = require("../controladores/temascontroladores");
 
 //mostrar los temas
-Router.get("/", mostrarTemas);
+router.get("/", mostrarTemas);
 
-module.exports = Router;
+module.exports = router;

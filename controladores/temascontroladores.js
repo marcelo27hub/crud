@@ -23,4 +23,17 @@ function crearTemas (req, res){
     temas.push(nuevoTema);
     res.json({success: true, tema: nuevoTema});
 }
-module.exports = {temas, mostrarTemas, crearTemas}
+
+//votar temas
+function votarTemas(req, res){
+    const id = parseInt(req.params.id);
+    const tema = temas.find( t => t.id === id);
+    if (tema){
+        temass.votos++;
+        res.json({success: true, votos: tema.votos});
+    } else{
+        res.json({success: false});
+    }
+}
+
+module.exports = {temas, mostrarTemas, crearTemas, votarTemas}

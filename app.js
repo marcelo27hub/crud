@@ -16,7 +16,7 @@ app.use(express.static("public"));
 
 //ruta principal 
 app.get("/", (req, res) =>{
-    res.send("servidor exxpress corriendo!");
+    res.send("servidor express corriendo!");
 });
 
 

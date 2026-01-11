@@ -35,4 +35,16 @@ function votarTemas(req, res){
     }
 }
 
-module.exports = {temas, mostrarTemas, crearTemas, votarTemas};
+//borrar tema
+function eliminarTemas(req, res){
+    const id = parseInt(req.params.id);
+    const index = temas.findIndex( t => t.id === id);
+    if (index !== -1){
+        temas.splice(index, 1);
+        res.json({success: true});
+    } else {
+        res.json({success: false});
+    }
+}
+
+module.exports = {temas, mostrarTemas, crearTemas, votarTemas, eliminarTemas};

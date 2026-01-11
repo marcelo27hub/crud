@@ -2,16 +2,97 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Temas de Aprendizaje</title>
+    <title>Temas</title>
 </head>
 <body>
-    <h1>Lista de Temas</h1>
+
+<h1>Temas de aprendizaje</h1>
+
+<form id="formTema">
+    <input name="titulo" placeholder="Nuevo tema" required>
+    <button>Agregar tema</button>
+</form>
+
+<ul>
+<% temas.forEach(t => { %>
+<li data-id="<%= t.id %>">
+    <strong><%= t.titulo %></strong>
+    (Votos: <span class="votos-tema"><%= t.votos %></span>)
+    <button class="votar-tema">👍</button>
+    <button class="borrar-tema">❌</button>
+
     <ul>
-    <% temas.forEach(tema => { %>
-        <li>
-        <strong><%= tema.titulo %></strong> — Votos: <%= tema.votos %>
-        </li>
+    <% t.enlaces.forEach(e => { %>
+    <li data-enlace="<%= e.id %>">
+        <a href="<%= e.url %>" target="_blank"><%= e.url %></a>
+        (<span class="votos-enlace"><%= e.votos %></span>)
+        <button class="votar-enlace">👍</button>
+        <button class="borrar-enlace">❌</button>
+    </li>
     <% }) %>
     </ul>
+
+    <form class="form-enlace">
+    <input name="url" placeholder="Nuevo enlace" required>
+    <button>Agregar enlace</button>
+    </form>
+</li>
+<% }) %>
+</ul>
+
+<script>
+document.querySelectorAll("li[data-id]").forEach(tema => {
+    const id = tema.dataset.id;
+
+  // votar tema
+    tema.querySelector(".votar-tema").onclick = () =>
+    fetch(`/temas/votar/${id}`, { method: "PUT" })
+        .then(() => location.reload());
+
+  // borrar tema
+    tema.querySelector(".borrar-tema").onclick = () =>
+    fetch(`/temas/borrar/${id}`, { method: "DELETE" })
+        .then(() => location.reload());
+
+  // crear enlace
+    tema.querySelector(".form-enlace").onsubmit = e => {
+    e.preventDefault();
+    const url = e.target.url.value;
+
+    fetch(`/temas/${id}/enlaces`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url })
+        }).then(() => location.reload());
+    };
+
+  // acciones enlaces
+    tema.querySelectorAll("li[data-enlace]").forEach(enlace => {
+    const eid = enlace.dataset.enlace;
+
+    // votar enlace
+    enlace.querySelector(".votar-enlace").onclick = () =>
+        fetch(`/temas/${id}/enlaces/${eid}/votar`, { method: "PUT" })
+        .then(() => location.reload());
+
+    // borrar enlace
+    enlace.querySelector(".borrar-enlace").onclick = () =>
+        fetch(`/temas/${id}/enlaces/${eid}`, { method: "DELETE" })
+        .then(() => location.reload());
+    });
+});
+
+// crear tema
+document.getElementById("formTema").onsubmit = e => {
+    e.preventDefault();
+
+    fetch("/temas/crear", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ titulo: e.target.titulo.value })
+    }).then(() => location.reload());
+};
+</script>
+
 </body>
 </html>

@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {mostrarTemas, crearTemas, votarTemas} = require("../controladores/temascontroladores");
-
-const {mostrarTemas, crearTemas} = require("../controladores/temascontroladores");
+const {mostrarTemas, crearTemas, votarTemas, eliminarTemas} = require("../controladores/temascontroladores");
 
 //mostrar los temas
 router.get("/", mostrarTemas);
@@ -12,6 +10,8 @@ router.get("/", mostrarTemas);
 router.post("/crear", crearTemas);
 
 //votar temas
-router.put("/votar", votarTemas);
+router.put("/votar/:id", votarTemas);
+
+router.delete("/borrar/:id", eliminarTemas)
 
 module.exports = router;

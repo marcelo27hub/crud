@@ -73,4 +73,13 @@ function votarEnlace(req, res) {
     enlace.votos++;
     res.json({ success: true, votos: enlace.votos });
 }
-module.exports = {temas, mostrarTemas, crearTemas, votarTemas, eliminarTemas, crearEnlace, votarEnlace};
+
+//eliminar enlaces
+function eliminarEnlace(req, res) {
+    const tema = temas.find(t => t.id == req.params.id);
+    if (!tema) return res.json({ success: false });
+
+    tema.enlaces = tema.enlaces.filter(e => e.id != req.params.enlaceId);
+    res.json({ success: true });
+}
+module.exports = {temas, mostrarTemas, crearTemas, votarTemas, eliminarTemas, crearEnlace, votarEnlace, eliminarEnlace};

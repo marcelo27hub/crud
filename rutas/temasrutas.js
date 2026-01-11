@@ -18,5 +18,5 @@ router.delete("/borrar/:id", eliminarTemas);
 //crear enlace, votar enlace, eliminar enlace
 router.post("/:id/enlaces", crearEnlace);
 router.put("/:id/enlaces/:enlaceId/votar", votarEnlace);
-router.delete(":/id/enlaces/:enlaceId", eliminarEnlace)
+router.delete("/:id/enlaces/:enlaceId", eliminarEnlace);
 module.exports = router;

@@ -7,7 +7,20 @@ let temas = [
 //mostrar los temas
 function mostrarTemas (req, res){
     const ordenados = [...temas].sort((a, b) => b.votos - a.votos);
-    res.render("/temas", {temas: ordenados});
+    res.render("temas", {temas: ordenados});
 }
 
-module.exports = {temas, mostrarTemas}
+
+//nuevos temas
+function crearTemas (req, res){
+    const nuevoTitulo = req.body.titulo;
+    const nuevoTema = {
+        id:temas.length ? temas[temas.length -1].id +1: 1,
+        titulo: nuevoTitulo,
+        votos: 0,
+        enlace: []
+    };
+    temas.push(nuevoTema);
+    res.json({success: true, tema: nuevoTema});
+}
+module.exports = {temas, mostrarTemas, crearTemas}

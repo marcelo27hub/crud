@@ -14,8 +14,4 @@ router.post("/crear", crearTemas);
 //votar temas
 router.put("/votar", votarTemas);
 
-
-router.post("/crear", crearTemas)
-
-
 module.exports = router;

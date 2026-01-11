@@ -61,4 +61,16 @@ function crearEnlace(req, res) {
     tema.enlaces.push(nuevoEnlace);
     res.json({ success: true, enlace: nuevoEnlace });
 }
-module.exports = {temas, mostrarTemas, crearTemas, votarTemas, eliminarTemas, crearEnlace};
+
+//votar enlaces
+function votarEnlace(req, res) {
+    const tema = temas.find(t => t.id == req.params.id);
+    if (!tema) return res.json({ success: false });
+
+    const enlace = tema.enlaces.find(e => e.id == req.params.enlaceId);
+    if (!enlace) return res.json({ success: false });
+
+    enlace.votos++;
+    res.json({ success: true, votos: enlace.votos });
+}
+module.exports = {temas, mostrarTemas, crearTemas, votarTemas, eliminarTemas, crearEnlace, votarEnlace};
